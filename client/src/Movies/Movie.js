@@ -31,9 +31,11 @@ export default class Movie extends React.Component {
     addToSavedList(this.state.movie);
   };
 
-  updateMovie = (id) => {
-    this.props.history.push(`/update-movie/${id}`)
-  }
+  updateMovie = () => {
+    this.props.history.push({
+      pathname:`/update-movie/${this.state.movie.id}`,
+      state: { movie: this.state.movie }
+  })}
 
   render() {
     if (!this.state.movie) {
@@ -46,7 +48,7 @@ export default class Movie extends React.Component {
         <div className="save-button" onClick={this.saveMovie}>
           Save
         </div>
-        <button onClick={() => this.updateMovie(this.state.movie.id)}>
+        <button onClick={this.updateMovie}>
           Update
         </button>
       </div>
