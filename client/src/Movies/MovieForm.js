@@ -1,79 +1,88 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default class MovieForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      movie: {
-        title: '',
-        director: '',
-        metascore: '',
-        stars: []
-      }
-    };
-  }
-  
-  updatedMovie = (e, id, movie) => {
-    e.preventDefault()
-    axios
-    .put(`http://localhost:5000/api/movies/${id}`, movie)
-    .then(res => 
-      console.log(res.data))
-      this.props.history.push('/movies')
-    .catch(err => 
-      console.log(err.response));
-  }
+function MovieForm(props) {
+  const [movie, setMovie] = useState({
+    id: '',
+    title: '',
+    director: '',
+    metascore: '',
+    stars: []
+  })
 
-  handleChange = (e) => {
-   this.setState({
-     ...this.movie, 
-   [e.target.name]: e.target.value
+  useEffect(() => {
+    axios.get(`http://localhost:5000/api/movies/${props.match.params.id}`)
+    .then(res => {
+      setMovie(res.data)
+    })
+    .catch(err => {
+      console.log(err.response);
+    })
+  }, [props.match.params.id])
+    
+
+  const handleChange = (e) => {
+    setMovie({
+      ...movie, 
+      [e.target.name]: e.target.value
     })
   } 
 
-  render () {
-    return (
-    <div className='formContainer'>
-      <form key={this.props.match.params.id} onSubmit={() => 
-        this.updateMovie(this.state.movie.id, this.state.movie)}>
+  const handleSubmit = (event) => {
+		event.preventDefault()
+		
+		axios.put(`http://localhost:5000/api/movies/${movie.id}`, movie)
+			.then(result => {
+				props.history.push("/")
+			})
+			.catch(error => {
+				console.log(error)
+			})
+	}
 
-        <input 
-          type='text'
-          name='title'
-          placeholder='Title'
-          value={this.state.movie.title}
-          onChange={this.handleChange}
-        />
+return (
+  <div className='formContainer'>
+    <form onSubmit={handleSubmit}>
 
-        <input 
-          type='text'
-          name='director'
-          placeholder='Director'
-          value={this.state.movie.director}
-          onChange={this.handleChange}
-        />
+      <input 
+        type='text'
+        name='title'
+        placeholder='Title'
+        value={movie.title}
+        onChange={handleChange}
+      />
 
-        <input 
-          type='text'
-          name='metascore'
-          placeholder='Metascore'
-          value={this.state.movie.metascore}
-          onChange={this.handleChange}
-        />
+      <input 
+        type='text'
+        name='director'
+        placeholder='Director'
+        value={movie.director}
+        onChange={handleChange}
+      />
 
-        <input 
-          type='text'
-          name='stars'
-          placeholder='stars'
-          value={this.state.movie.stars}
-          onChange={this.handleChange}
-        />
+      <input 
+        type='text'
+        name='metascore'
+        placeholder='Metascore'
+        value={movie.metascore}
+        onChange={handleChange}
+      />
 
-        <button type='submit'>
-          Submit
-        </button>
-      </form>
-    </div>
-  )}
+      <input 
+        type='text'
+        name='stars'
+        placeholder='stars'
+        value={movie.stars}
+        onChange={handleChange}
+      />
+
+      <button type='submit'>
+        Submit
+      </button>
+    </form>
+  </div>
+  )
 }
+
+
+export default MovieForm;
