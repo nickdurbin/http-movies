@@ -24,7 +24,15 @@ function MovieForm(props) {
   const handleChange = (e) => {
     setMovie({
       ...movie, 
-      [e.target.name]: e.target.value.split(' ')
+      [e.target.name]: e.target.value
+    })
+    console.log(e.target.value)
+  } 
+
+  const handleStars = (e) => {
+    setMovie({
+      ...movie, 
+      stars: [e.target.value]
     })
     console.log(e.target.value)
   } 
@@ -73,10 +81,8 @@ return (
         type='text'
         name='stars'
         placeholder='stars'
-        value={movie.stars.map(star => {
-          return star
-        })}
-        onChange={(e) => handleChange(e)}
+        value={movie.stars}
+        onChange={(e) => handleStars(e, movie)}
       />
 
       <button type='submit'>
