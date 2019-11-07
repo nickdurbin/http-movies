@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import MovieList from './MovieList';
 
 function MovieForm(props) {
   const [movie, setMovie] = useState({
@@ -25,7 +24,7 @@ function MovieForm(props) {
   const handleChange = (e) => {
     setMovie({
       ...movie, 
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value.split(' ')
     })
     console.log(e.target.value)
   } 
@@ -70,16 +69,15 @@ return (
         onChange={handleChange}
       />
 
-      {movie.stars.map((star, index) => (
-        <input 
-          key={index}
-          type='text'
-          name='stars'
-          placeholder='stars'
-          value={star}
-          onChange={(e) => handleChange(star).split(' ')}
-        />
-      ))}
+      <input 
+        type='text'
+        name='stars'
+        placeholder='stars'
+        value={movie.stars.map(star => {
+          return star
+        })}
+        onChange={(e) => handleChange(e)}
+      />
 
       <button type='submit'>
         Submit
