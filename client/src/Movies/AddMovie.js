@@ -13,9 +13,17 @@ function AddMovie() {
   const handleChange = event => {
     setNewMovie({
       ...newMovie,
-      [event.target.name]: event.target.value.split(' ')
+      [event.target.name]: event.target.value
     });
   };
+
+  const handleStars = (e) => {
+    setNewMovie({
+      ...newMovie, 
+      stars: [e.target.value]
+    })
+    console.log(e.target.value)
+  } 
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -48,7 +56,7 @@ function AddMovie() {
         </label>
         <label>
           Stars:
-          <input type="text" name="stars" value={newMovie.stars} onChange={event => handleChange(event)} />
+          <input type="text" name="stars" value={newMovie.stars} onChange={e => handleStars(e, newMovie)} />
         </label>
         <button className="formButton">Submit</button>
     </form>
