@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Route } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
+import AddMovie from "./Movies/AddMovie";
 import Movie from "./Movies/Movie";
 import MovieForm from './Movies/MovieForm';
 
@@ -19,6 +20,7 @@ const App = () => {
     <>
       <SavedList list={savedList} />
       <Route exact path="/" component={MovieList} />
+      <Route path='/add-movie' render={props => <AddMovie {...props} />} />
       <Route
         path="/movies/:id"
         render={props => {
